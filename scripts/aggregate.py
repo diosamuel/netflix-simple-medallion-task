@@ -1,6 +1,12 @@
 import pandas as pd
 import io
-from datetime import datetime
+import boto3
+
+s3 = boto3.client('s3',
+    endpoint_url = 'http://minio:9000',
+    aws_access_key_id = 'admin',
+    aws_secret_access_key = 'admin123'
+)
 
 res = s3.get_object(Bucket='silver',Key='silver.parquet')
 data = res['Body'].read()
@@ -19,3 +25,5 @@ s3.put_object(
     Key='gold.parquet',
     Body=output.getvalue()
 )
+
+print(df.rename(columns={'explode_list':'kategori'}))

@@ -2,7 +2,6 @@ import boto3
 import pandas as pd
 import io
 
-
 s3 = boto3.client('s3',
     endpoint_url = 'http://minio:9000',
     aws_access_key_id = 'admin',
@@ -15,7 +14,7 @@ text = io.BytesIO(res['Body'].read())
 df = pd.read_csv(text)
 df['explode_list'] = df['listed_in'].str.split(',').apply(lambda x:list(map(lambda y:y.strip(),x)))
 df = df.explode('explode_list')
-df['processed_at'] = datetime.now()
+df['processed_at'] = pd.Timestamp.now()
 
 # to silver
 output=io.BytesIO()
