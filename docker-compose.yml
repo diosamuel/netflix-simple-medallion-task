@@ -16,6 +16,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
   create_buckets:
     image: minio/minio:latest
     depends_on:
@@ -32,6 +33,7 @@ services:
       mc mb --ignore-existing netflix-dwh/silver;
       mc mb --ignore-existing netflix-dwh/gold;
       mc cp /dataset/netflix_titles.csv netflix-dwh/bronze/netflix_titles.csv;"
+
   jupyter:
     build:
       context: .
@@ -54,8 +56,13 @@ services:
       dockerfile: Dockerfile
     container_name: bigdata-compute
     volumes:
-      - ./app:/app
+      - ./:/app
     working_dir: /app
     depends_on:
       - minio
     tty: true
+
+networks:
+  default:
+    name: netflix_net
+    driver: bridge
