@@ -5,7 +5,7 @@ A simple medallion pipeline using MinIO + Python + Jupyter.
 ## Quick Start
 
 1. Clone and enter the project:
-   `git clone https://github.com/RakhaRabbani/netflix-datawarehouse && cd netflix-datawarehouse`
+   `git clone https://github.com/diosamuel/netflix-simple-medallion-task && cd netflix-datawarehouse`
 
 2. Start all services:
    `docker compose up -d --build`

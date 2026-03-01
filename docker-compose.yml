@@ -16,7 +16,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
-
+    networks:
+      - netflix_net
   create_buckets:
     image: minio/minio:latest
     depends_on:
@@ -33,7 +34,8 @@ services:
       mc mb --ignore-existing netflix-dwh/silver;
       mc mb --ignore-existing netflix-dwh/gold;
       mc cp /dataset/netflix_titles.csv netflix-dwh/bronze/netflix_titles.csv;"
-
+    networks:
+      - netflix_net
   jupyter:
     build:
       context: .
@@ -49,6 +51,8 @@ services:
     depends_on:
       - minio
     tty: true
+    networks:
+      - netflix_net
 
   compute:
     build:
@@ -61,8 +65,9 @@ services:
     depends_on:
       - minio
     tty: true
+    networks:
+      - netflix_net
 
 networks:
-  default:
-    name: netflix_net
+  netflix_net:
     driver: bridge
